@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+
+/*
+ * Color palette — the single source of truth for every color in the app.
+ * Each token becomes a Tailwind utility: --color-accent → bg-accent, text-accent, border-accent…
+ * Change a value here and it updates everywhere.
+ */
+@theme {
+  /* Backgrounds */
+  --color-page: #121212;
+  --color-hero: #2a2a2f; /* top of the profile header gradient */
+  --color-card: #202020;
+  --color-chip: #262626; /* social buttons, tab track */
+  --color-placeholder: #3a3942; /* image fallbacks */
+  --color-skeleton: #2b2b2b;
+
+  /* Text */
+  --color-fg: #ffffff;
+  --color-muted: #b3b3b3;
+  --color-subtle: #8a8a8a;
+
+  /* Brand */
+  --color-accent: #7c3aed;
+  --color-accent-soft: #a78bfa; /* accent used on text and icons */
+
+  /* Lines */
+  --color-line: #2e2e2e;
+
+  --font-sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* Motion — shared easing and entrance animation (animate-fade-up) */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-up: fade-up 0.55s var(--ease-out-expo) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+}
+
+/*
+ * Staggered entrance for every direct child. It replays when a tab panel is shown again
+ * (display: none → block restarts CSS animations) and when data replaces a skeleton.
+ */
+@utility stagger {
+  & > * {
+    animation: var(--animate-fade-up);
+    animation-delay: 360ms;
+  }
+  & > :nth-child(1) { animation-delay: 0ms; }
+  & > :nth-child(2) { animation-delay: 60ms; }
+  & > :nth-child(3) { animation-delay: 120ms; }
+  & > :nth-child(4) { animation-delay: 180ms; }
+  & > :nth-child(5) { animation-delay: 240ms; }
+  & > :nth-child(6) { animation-delay: 300ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-page text-fg font-sans antialiased;
+  }
+}
