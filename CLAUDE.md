@@ -47,7 +47,7 @@ Base URL: `https://reelbeat-api.onrender.com` (override with `VITE_API_URL` in `
 | Endpoint | Used by |
 |---|---|
 | `GET /api/music/summary` | listening time, top artist(s), top song(s) — one request |
-| `GET /api/music/now-playing` | Live now / Last played card (independent request) |
+| `GET /api/music/now-playing` | Live now / Last played card (independent request, polled every 15 s via `useApi`'s `refreshIntervalMs`; paused while the browser tab is hidden) |
 | `GET /api/movies/recent?limit=50` | movie grid (independent request) |
 | `/api/music/top-artists`, `/top-tracks`, `/listening-time`, `/health` | not used (covered by summary) |
 

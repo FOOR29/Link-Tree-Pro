@@ -84,6 +84,10 @@ link-tree-pro/
    - **Error:** mensaje con botón "Try again".
    - **Vacío:** mensaje explicativo.
 5. Las dos pestañas se quedan cargadas en memoria, así que al cambiar entre Music y Movies no se vuelve a pedir nada.
+6. **"Live now" en tiempo real:** `now-playing` se vuelve a consultar en segundo plano cada 15 segundos, sin recargar la página
+   ni mostrar el esqueleto de carga. Si una consulta falla, se mantiene la última canción. Se pausa mientras la pestaña
+   del navegador está oculta y se actualiza al volver. El intervalo está en `NOW_PLAYING_REFRESH_MS`
+   (`src/components/music/MusicDashboard.tsx`).
 
 ### La API puede tardar
 

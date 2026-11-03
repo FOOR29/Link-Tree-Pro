@@ -9,6 +9,9 @@ import { NowPlayingCard } from './NowPlayingCard'
 import { TopArtistCard, TopArtistsCard } from './TopArtistCards'
 import { TopSongCard, TopSongsCard } from './TopTrackCards'
 
+// Last.fm updates the current track within seconds; poll it so "Live now" stays current without reloading.
+const NOW_PLAYING_REFRESH_MS = 15_000
+
 const musicError = {
   title: "Couldn't load listening stats",
   description: "The music service didn't respond. It may be waking up — try again in a moment.",
@@ -16,7 +19,7 @@ const musicError = {
 
 export function MusicDashboard() {
   const summary = useApi(getMusicSummary)
-  const nowPlaying = useApi(getNowPlaying)
+  const nowPlaying = useApi(getNowPlaying, { refreshIntervalMs: NOW_PLAYING_REFRESH_MS })
 
   // When the whole music service is down (e.g. still waking up), show a single error instead of two.
   const allFailed = summary.state.status === 'error' && nowPlaying.state.status === 'error'
@@ -96,7 +99,8 @@ function NowPlayingSlot({ state, onRetry }: SlotProps<NowPlaying | null>) {
       />
     )
   }
-  return <NowPlayingCard track={state.data} />
+  // Keyed by track so a new song remounts the card and replays its entrance animation.
+  return <NowPlayingCard key={state.data.url} track={state.data} />
 }
 
 function ListeningTimeSkeleton() {
